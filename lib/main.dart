@@ -4,14 +4,20 @@ import 'package:minimal_shop_flutter/pages/cart_page.dart';
 import 'package:minimal_shop_flutter/pages/settings_page.dart';
 import 'package:minimal_shop_flutter/pages/shop_page.dart';
 import 'package:minimal_shop_flutter/theme/theme.dart';
+import 'package:minimal_shop_flutter/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'pages/intro_page.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(create: (context)=>Shop(),
-    child: const MyApp(),)
+    MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context)=> Shop()),
+          ChangeNotifierProvider(create: (context)=>ThemeProvider()),
+    ],
+    child: const MyApp(),
+    ),
   );
 }
 
@@ -23,7 +29,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: const IntroPage(),
-      theme: lightMode,
+      theme: Provider.of<ThemeProvider>(context).themeData,
       routes: {
         '/shop_page':(context)=>const ShopPage(),
         '/intro_page':(context)=>const IntroPage(),
